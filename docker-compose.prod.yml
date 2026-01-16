@@ -1,0 +1,43 @@
+# Production docker-compose configuration
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+version: '3.8'
+
+services:
+  transmission:
+    restart: always
+    networks:
+      - transmission-network
+
+  backend:
+    restart: always
+    environment:
+      - NODE_ENV=production
+    networks:
+      - transmission-network
+
+  frontend:
+    restart: always
+    networks:
+      - transmission-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: transmission-proxy
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+      - ./web:/usr/share/nginx/html:ro
+    restart: always
+    networks:
+      - transmission-network
+
+networks:
+  transmission-network:
+    driver: bridge

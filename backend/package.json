@@ -1,0 +1,43 @@
+{
+  "name": "transmission-frontend-backend",
+  "version": "1.0.0",
+  "description": "Multi-user Transmission frontend backend API",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "keywords": [
+    "transmission",
+    "torrent",
+    "rss",
+    "multi-user"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^11.7.0",
+    "connect-sqlite3": "^0.9.13",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "csrf-csrf": "^3.0.4",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.17.3",
+    "feedparser": "^2.2.10",
+    "helmet": "^7.1.0",
+    "multer": "^2.0.2",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^2.7.0",
+    "transmission": "^0.4.9",
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

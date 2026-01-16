@@ -1,0 +1,200 @@
+.torrents-page {
+  padding: 2rem;
+}
+
+.torrents-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.torrents-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.torrents-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.filter-input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.upload-button {
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.upload-button:hover {
+  background: #5568d3;
+}
+
+.error-message {
+  background: #fee;
+  color: #c33;
+  padding: 0.75rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+}
+
+.torrents-list {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.torrents-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.torrents-list th {
+  background: #f8f9fa;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.torrents-list td {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.torrents-list tr.own-torrent {
+  background: #f0f7ff;
+}
+
+.torrents-list tr:hover {
+  background: #f8f9fa;
+}
+
+.torrents-list tr.own-torrent:hover {
+  background: #e6f2ff;
+}
+
+.no-torrents {
+  text-align: center;
+  color: #999;
+  padding: 2rem !important;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100px;
+  height: 20px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s;
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.owner-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  background: #e9ecef;
+  color: #555;
+}
+
+.owner-badge.own {
+  background: #667eea;
+  color: white;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.status-downloading {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge.status-seeding {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.status-stopped {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.status-checking {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.status-queued-to-check {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.status-badge.status-queued-to-seed {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge.status-queued-to-download {
+  background: #cfe2ff;
+  color: #084298;
+}
+
+.status-badge.status-unknown {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.delete-button {
+  padding: 0.4rem 0.8rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
