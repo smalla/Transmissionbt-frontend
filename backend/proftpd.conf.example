@@ -1,0 +1,55 @@
+# ProFTPD Configuration for Multi-User Transmission Frontend
+# This is a TEMPLATE - customize for your environment
+# Replace placeholder values from .env file
+# Include this file from /etc/proftpd/proftpd.conf with:
+#   Include /path/to/this/file
+
+# Customize these paths and ports in your environment
+<VirtualHost 0.0.0.0>
+  ServerName "Transmission FTP"
+  Port 2122
+  RootLogin off
+  
+  # Passive mode ports (adjust for your firewall)
+  PassivePorts 49152 65534
+
+  # Use mod_sql_sqlite for authentication
+  <IfModule mod_sql_sqlite.c>
+    # Enable SQL authentication (Crypt for MD5 hashes from openssl passwd -1)
+    SQLAuthTypes Crypt
+    SQLAuthenticate users
+    
+    # Database connection - customize path from DATA_DIR
+    SQLConnectInfo /var/www/tf/backend/data/users.db
+    
+    # User query: get user info
+    # ProFTPD expects: username, password, uid, gid, homedir, shell
+    SQLUserInfo custom:/get-user-info
+    SQLNamedQuery get-user-info SELECT "username, ftp_password, 1000, 1000, '/mnt/tf/downloads', '/bin/false' FROM users WHERE username='%{0}' AND ftp_password IS NOT NULL"
+    
+    # Disable group lookups (we don't use groups)
+    SQLAuthenticate users
+    
+    # Log SQL queries for debugging
+    SQLLogFile /var/log/proftpd/sql.log
+  </IfModule>
+
+  # Default settings for authenticated users
+  <Limit LOGIN>
+    AllowAll
+  </Limit>
+
+  # Umask for uploaded files
+  Umask 022 022
+
+  # Chroot users to their home directory (download folder)
+  DefaultRoot /mnt/tf/downloads/
+
+  # Hide system files
+  <Directory /mnt/tf/downloads/*>
+    HideFiles (^\..+|transmission.*|resume.*|torrents.*)
+    <Limit ALL>
+      AllowAll
+    </Limit>
+  </Directory>
+</VirtualHost>

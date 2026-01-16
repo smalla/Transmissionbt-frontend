@@ -1,0 +1,243 @@
+.admin-page {
+  padding: 2rem;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.add-button {
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.add-button:hover {
+  background: #5568d3;
+}
+
+.error-message {
+  background: #fee;
+  color: #c33;
+  padding: 0.75rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.add-form {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.add-form h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-row input[type="text"],
+.form-row input[type="password"],
+.form-row input[type="email"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: auto;
+}
+
+.add-form button[type="submit"] {
+  padding: 0.5rem 1.5rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.users-list {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.users-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-list th {
+  background: #f8f9fa;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.users-list td {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  background: #e9ecef;
+  color: #555;
+}
+
+.role-badge.admin {
+  background: #667eea;
+  color: white;
+}
+
+.delete-button {
+  padding: 0.4rem 0.8rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
+
+.edit-button {
+  padding: 0.4rem 0.8rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.edit-button:hover {
+  background: #218838;
+}
+
+.actions-cell {
+  min-width: 200px;
+}
+
+.password-edit {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.password-edit input {
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 150px;
+}
+
+.save-button {
+  padding: 0.4rem 0.8rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.save-button:hover {
+  background: #218838;
+}
+
+.cancel-button {
+  padding: 0.4rem 0.8rem;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.cancel-button:hover {
+  background: #5a6268;
+}
+
+.ftp-button {
+  padding: 0.4rem 0.8rem;
+  background: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.ftp-button:hover {
+  background: #138496;
+}
+
+.warning-button {
+  padding: 0.4rem 0.8rem;
+  background: #ffc107;
+  color: #212529;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.warning-button:hover {
+  background: #e0a800;
+}
+
+.ftp-enabled {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.ftp-disabled {
+  color: #6c757d;
+}

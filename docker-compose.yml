@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  transmission:
+    image: haugene/transmission-openvpn:latest
+    container_name: transmission
+    environment:
+      - OPENVPN_PROVIDER=PIA  # Change based on your VPN provider
+      - OPENVPN_USERNAME=${VPN_USERNAME:-}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD:-}
+      - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=true
+      - TRANSMISSION_RPC_USERNAME=admin
+      - TRANSMISSION_RPC_PASSWORD=${TRANSMISSION_PASSWORD:-transmission}
+      - TRANSMISSION_DOWNLOAD_DIR=/downloads
+      - TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - transmission-data:/var/lib/transmission-daemon/
+      - downloads:/downloads
+    ports:
+      - "9091:9091"  # RPC port
+      - "51413:51413"  # Torrent port
+      - "51413:51413/udp"
+    restart: unless-stopped
+    # Remove VPN if not needed:
+    # image: transmission:latest
+    # command: transmission-daemon -f -c /var/lib/transmission-daemon
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: transmission-backend
+    depends_on:
+      - transmission
+    environment:
+      - NODE_ENV=production
+      - PORT=42080
+      - HOST=0.0.0.0
+      - TRANSMISSION_HOST=transmission
+      - TRANSMISSION_PORT=9091
+      - TRANSMISSION_USERNAME=admin
+      - TRANSMISSION_PASSWORD=${TRANSMISSION_PASSWORD:-transmission}
+      - SESSION_SECRET=${SESSION_SECRET:-change-me-in-production}
+      - DATA_DIR=/app/data
+      - DOWNLOADS_DIR=/downloads
+      - LOG_LEVEL=info
+    volumes:
+      - backend-data:/app/data
+      - downloads:/downloads:ro
+    ports:
+      - "42080:42080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:42080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: transmission-frontend
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:42080/api
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Reverse proxy (optional, for production use)
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: transmission-proxy
+  #   depends_on:
+  #     - backend
+  #     - frontend
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./certs:/etc/nginx/certs:ro
+  #   restart: unless-stopped
+
+volumes:
+  transmission-data:
+    driver: local
+  backend-data:
+    driver: local
+  downloads:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/crypted/downloads
+
+networks:
+  default:
+    name: transmission-network
