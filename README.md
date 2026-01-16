@@ -1,6 +1,6 @@
 # Transmissionbt-frontend
 A very simple multi user frontend for the transmission-daemon   
-Made by AI, thank You Claude and Gemini
+Made by AI, thank You Claude and Gemini and bmad-method
 
 # Multi-User Transmission Frontend
 
