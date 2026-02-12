@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ChangePasswordModal.css';
+import apiClient from '../api/client';
 
 function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
   const [activeTab, setActiveTab] = useState('account');
@@ -15,10 +16,9 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
   useEffect(() => {
     if (isOpen) {
       // Check if user has FTP enabled
-      fetch('/api/auth/me', { credentials: 'include' })
-        .then(res => res.json())
-        .then(data => {
-          setFtpEnabled(data.ftp_enabled || false);
+      apiClient.get('/auth/me')
+        .then(res => {
+          setFtpEnabled(res.data.ftp_enabled || false);
         })
         .catch(() => {});
     }
@@ -44,23 +44,12 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
       setIsLoading(true);
 
       try {
-        const response = await fetch('/api/auth/change-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            currentPassword,
-            newPassword,
-          }),
+        console.log('Attempting to change password...');
+        const response = await apiClient.post('/auth/change-password', {
+          currentPassword,
+          newPassword,
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to change password');
-        }
+        console.log('Password change response:', response);
 
         // Clear form
         setCurrentPassword('');
@@ -75,7 +64,9 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
         // Close modal
         onClose();
       } catch (err) {
-        setError(err.message);
+        console.error('Password change error:', err);
+        console.error('Error response:', err.response);
+        setError(err.response?.data?.error || err.message);
       } finally {
         setIsLoading(false);
       }
@@ -95,22 +86,9 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
       setIsLoading(true);
 
       try {
-        const response = await fetch('/api/auth/ftp-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            ftpPassword,
-          }),
+        await apiClient.post('/auth/ftp-password', {
+          ftpPassword,
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to set FTP password');
-        }
 
         // Clear form
         setFtpPassword('');
@@ -125,7 +103,7 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
         // Close modal
         onClose();
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.error || err.message);
       } finally {
         setIsLoading(false);
       }
@@ -141,16 +119,7 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/ftp-password', {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to disable FTP access');
-      }
+      await apiClient.delete('/auth/ftp-password');
 
       setFtpEnabled(false);
       setFtpPassword('');
@@ -162,7 +131,7 @@ function ChangePasswordModal({ isOpen, onClose, onSuccess }) {
 
       onClose();
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.error || err.message);
     } finally {
       setIsLoading(false);
     }
