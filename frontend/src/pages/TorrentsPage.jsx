@@ -31,6 +31,16 @@ function TorrentsPage() {
     }
   };
 
+  const handleRestart = async (id, name) => {
+    if (!window.confirm(`Restart download of "${name}"?`)) return;
+    try {
+      await apiClient.post(`/torrents/${id}/start`);
+      loadTorrents();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to restart torrent');
+    }
+  };
+
   const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
@@ -155,9 +165,20 @@ function TorrentsPage() {
                 <tr key={torrent.id} className={torrent.is_own ? 'own-torrent' : ''}>
                   <td title={torrent.name}>{torrent.name}</td>
                   <td>
-                    <span className={`status-badge status-${torrent.statusLabel}`}>
-                      {torrent.statusLabel}
-                    </span>
+                    {torrent.statusLabel === 'stopped' && (torrent.is_own || user?.is_admin) ? (
+                      <button
+                        type="button"
+                        className={`status-badge status-${torrent.statusLabel} status-button`}
+                        onClick={() => handleRestart(torrent.id, torrent.name)}
+                        title="Click to restart download"
+                      >
+                        {torrent.statusLabel}
+                      </button>
+                    ) : (
+                      <span className={`status-badge status-${torrent.statusLabel}`}>
+                        {torrent.statusLabel}
+                      </span>
+                    )}
                   </td>
                   <td>
                     <div className="progress-bar">

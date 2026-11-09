@@ -242,6 +242,20 @@ class TransmissionService {
     return { success: true };
   }
 
+  // Restart a torrent: verify local data first, then start.
+  // Verifying makes Transmission notice missing files and download them again.
+  startTorrent(id) {
+    return new Promise((resolve, reject) => {
+      this.getClient().verify(id, (verifyErr) => {
+        if (verifyErr) return reject(verifyErr);
+        this.getClient().start(id, (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        });
+      });
+    });
+  }
+
   // Stop a torrent
   stopTorrent(id) {
     return new Promise((resolve, reject) => {

@@ -168,6 +168,27 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
+// Restart a stopped torrent (owner or admin)
+router.post('/:id/start', async (req, res, next) => {
+  try {
+    const torrentId = parseInt(req.params.id);
+    if (!Number.isInteger(torrentId)) {
+      return res.status(400).json({ error: 'Invalid torrent id' });
+    }
+    const torrent = await transmissionService.getTorrentDetails(torrentId);
+    const isAdmin = req.session.isAdmin;
+    const isOwner = torrentMetadata.isOwner(torrent.hashString, req.session.userId);
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ error: 'You can only restart your own torrents' });
+    }
+    await transmissionService.startTorrent(torrentId);
+    console.log(`Torrent ${torrentId} restarted by user ${req.session.userId}`);
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Toggle block auto-remove flag
 router.patch('/:id/block-auto-remove', async (req, res, next) => {
   try {

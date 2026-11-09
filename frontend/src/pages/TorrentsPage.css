@@ -154,6 +154,17 @@
   color: #155724;
 }
 
+.status-badge.status-button {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.status-badge.status-button:hover {
+  filter: brightness(0.92);
+  text-decoration: underline;
+}
+
 .status-badge.status-stopped {
   background: #f8d7da;
   color: #721c24;
